@@ -1,1 +1,18 @@
+SELECT
 
+	CAMPAIGN_ID as  campaign_id,
+
+	---one CAMPAIGN_ID has two campaign names in some cases. one has unncessary space in between, so we removed it here 
+    REPLACE(CAMPAIGN_NAME, ' ', '') AS campaign_name,
+	
+	--grouped unknown and NULL values into 'others'
+    CASE
+        WHEN CAMPAIGN_PERIOD_BUDGET_CATEGORY IN ('unknown') OR CAMPAIGN_PERIOD_BUDGET_CATEGORY IS NULL THEN 'others'
+        ELSE CAMPAIGN_PERIOD_BUDGET_CATEGORY
+    END AS campaign_period_budget_category,
+	
+	--removed unncessary single and double spaces in between texts
+   CASE WHEN  CHANNEL_3 IS NULL THEN 'others' ELSE REPLACE(CHANNEL_3, ' ', '')  END AS channel_3,
+    CASE WHEN CHANNEL_4 IS NULL THEN 'others' ELSE REPLACE(CHANNEL_4, '  ', ' ') END AS channel_4,
+    CASE WHEN CHANNEL_5 IS NULL THEN 'others' ELSE REPLACE(CHANNEL_5, '  ', ' ') END  AS channel_5
+FROM CHANNELS
