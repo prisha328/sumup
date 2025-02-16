@@ -1,67 +1,5 @@
-WITH data AS (
-    SELECT 
-        DATE(DATE) AS date, 
-        CURRENCY AS currency,
-        COUNTRY_CODE AS country_code,
-        
-        -- Standardize CAMPAIGN_ID
-        CASE 
-            WHEN CAMPAIGN_ID IS NULL THEN 'others' 
-            ELSE CAST(CAST(FLOOR(CAST(CAMPAIGN_ID AS DOUBLE)) AS BIGINT) AS VARCHAR)
-        END AS campaign_id,
-
-        -- Standardize CAMPAIGN_NAME
-        CASE 
-            WHEN CAMPAIGN_NAME IS NULL OR CAMPAIGN_NAME = 'unknown' THEN 'others'  
-            ELSE REPLACE(CAMPAIGN_NAME, ' ', '')  
-        END AS campaign_name,
-
-        -- Standardize PRODUCT
-        CASE 
-            WHEN PRODUCT IS NULL OR PRODUCT = 'unknown' THEN 'others' 
-            ELSE REPLACE(PRODUCT, ' ', '-')  
-        END AS product,
-
-        -- Standardize CHANNEL_3
-        CASE 
-            WHEN CHANNEL_3 IS NULL THEN 'others' 
-            ELSE CHANNEL_3 
-        END AS channel_3,
-
-        -- Clean CHANNEL_4
-        CASE 
-            WHEN CHANNEL_4 IS NULL THEN 'others' 
-            ELSE REPLACE(REPLACE(REPLACE(CHANNEL_4, 
-                        'shopp ing', 'shopping'), 
-                        'pro specting', 'prospecting'), 
-                        'prosp ecting', 'prospecting') 
-        END AS channel_4,
-
-        -- Clean CHANNEL_5
-        CASE 
-            WHEN CHANNEL_5 IS NULL THEN 'others' 
-            ELSE REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(CHANNEL_5, 
-                        'shopp ing', 'shopping'), 
-                        'pro specting', 'prospecting'),
-                        'p rospecting', 'prospecting'),
-                        'prospe cting', 'prospecting'),
-                        'prosp ecting', 'prospecting') 
-        END AS channel_5 ,
-		
-		TOTAL_IMPRESSIONS AS total_impressions,
-		TOTAL_CLICKS AS total_clicks,
-		TOTAL_SPEND AS total_spend,
-		TOTAL_LEADS AS total_leads,
-		TOTAL_FAKE_LEADS AS total_fake_leads,
-		TOTAL_SQLS AS total_sqls,
-		TOTAL_MEETING_DONE AS total_meeting_done,
-		TOTAL_SIGNED_LEADS AS total_signed_leads,
-		TOTAL_POS_LITE_DEALS AS total_pos_lite_deals
-    FROM leads_funnel
-    ORDER BY DATE ASC
-)
-
-SELECT 
+--this SQL query contains all the data from leads_funnel table and in addition, has more calculated fields. Ideally, this calculated field should be created in Tableau, else we will have aggregation problem for calculated fields.
+SELECT  
     *,
     -- Click-Through Rate (CTR) = Clicks / Impressions
     CASE 
@@ -111,6 +49,6 @@ SELECT
         ELSE 0 
     END AS pos_lite_deals_rate
 
-FROM data
+FROM staging.leads_funnel
 
 
