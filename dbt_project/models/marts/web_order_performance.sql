@@ -21,6 +21,7 @@ SELECT
     COALESCE(c.channel_5, 'unknown') AS channel_5,
 
     -- Aggregated Metrics
+    SUM(w.nb_of_sessions) AS total_sessions,
     SUM(w.nb_of_signups) AS total_signups,
     SUM(w.nb_of_poslite_items_ordered) AS total_items_ordered,
     SUM(w.nb_of_orders) AS total_orders,
