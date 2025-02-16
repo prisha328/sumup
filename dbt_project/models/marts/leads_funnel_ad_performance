@@ -9,6 +9,7 @@ SELECT
     channel_5,
     SUM(total_impressions) AS total_impressions,
     SUM(total_clicks) AS total_clicks,
-    SUM(total_spend) AS total_spend
+    SUM(total_spend) AS total_spend,
+    SUM(total_leads) as total_leads
 FROM staging.leads_funnel
-GROUP BY 	1,2,3,4,5,6,7,8
+GROUP BY 1,2,3,4,5,6,7,8
