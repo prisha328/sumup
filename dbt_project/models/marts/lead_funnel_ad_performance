@@ -1,0 +1,14 @@
+SELECT 
+    date,
+    currency,
+    country_code,
+    campaign_id,
+    campaign_name,
+    channel_3,
+    channel_4,
+    channel_5,
+    SUM(total_impressions) AS total_impressions,
+    SUM(total_clicks) AS total_clicks,
+    SUM(total_spend) AS total_spend
+FROM staging.leads_funnel
+GROUP BY 	1,2,3,4,5,6,7,8
