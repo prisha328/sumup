@@ -2,6 +2,7 @@ SELECT
     date,
     country_code,
     campaign_id,
+	campaign_name,
     SUM(total_leads) AS total_leads,
     SUM(total_fake_leads) AS total_fake_leads,
     SUM(total_sqls) AS total_sqls,
@@ -9,4 +10,4 @@ SELECT
     SUM(total_signed_leads) AS total_signed_leads,
     SUM(total_pos_lite_deals) AS total_pos_lite_deals
 FROM staging.leads_funnel
-GROUP BY 1,2,3
+GROUP BY 1,2,3,4
